@@ -18,5 +18,9 @@ public class RentalVehicleApplication {
 		return "hello";
 	}
 	
+	@GetMapping("/bye")
+	public String Bye() {
+		return "Bye";
+	}
 	
 }
