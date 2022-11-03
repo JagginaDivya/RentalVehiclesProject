@@ -27,5 +27,9 @@ public class RentalVehicleApplication {
 	public String Morning() {
 		return "Morning";
 	}
+	@GetMapping("/morning")
+	public String goodMorning() {
+		return "Morning";
+	}
 	
 }
