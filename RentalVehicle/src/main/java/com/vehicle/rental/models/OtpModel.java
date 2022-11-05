@@ -3,15 +3,15 @@ package com.vehicle.rental.models;
 
 public class OtpModel {
 	
-	private String key;
+	private String email;
     private String otp;
     
     
 	public String getKey() {
-		return key;
+		return email;
 	}
 	public void setKey(String key) {
-		this.key = key;
+		this.email = key;
 	}
 	public String getOtp() {
 		return otp;
