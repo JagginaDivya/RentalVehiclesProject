@@ -15,9 +15,12 @@ import com.vehicle.rental.models.OtpKeyModel;
 import com.vehicle.rental.models.OtpModel;
 import com.vehicle.rental.repository.CacheRepository;
 
+import lombok.extern.slf4j.Slf4j;
+
 
 @RestController
 @RequestMapping("/api/v1/otp")
+@Slf4j
 public class RedisOtpController {
 	
 	
@@ -38,7 +41,7 @@ public class RedisOtpController {
 
     @PostMapping("/generate")
     public ResponseEntity<String> sendEmailAndAddToCache(@RequestBody OtpKeyModel key) {
-    	
+    	log.info("Send email and add to cache invoked inside redis otp controller");
     	int value = otpGenerator.generateOtp();
         String body="Hi, your otp is "+value;
         emailSenderService.sendEmail(key.getEmail(), "Testing OTP Feature", body);
@@ -51,13 +54,13 @@ public class RedisOtpController {
     @PostMapping("/verify")
     public ResponseEntity<String> removeFromCache(@RequestBody OtpModel otpValidateRequest) {
     	
-        Optional<String> s = cacheRepository.get(otpValidateRequest.getKey());
+        Optional<String> s = cacheRepository.get(otpValidateRequest.getEmail());
 
         if (s.isPresent() && s.get().equals(otpValidateRequest.getOtp())) {
-            cacheRepository.remove(otpValidateRequest.getKey());
-            return ResponseEntity.ok("Key Removed from cache key:  " + otpValidateRequest.getKey());
+            cacheRepository.remove(otpValidateRequest.getEmail());
+            return ResponseEntity.ok("Key Removed from cache key:  " + otpValidateRequest.getEmail());
         }
-
+        log.error("Invalid otp");
         return ResponseEntity.badRequest().body("Invalid Otp");
     }
 
